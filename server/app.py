@@ -18,6 +18,9 @@ migrate = Migrate(app, db)
 
 db.init_app(app)
 
+with app.app_context():
+    db.create_all()
+
 api = Api(app)
 
 
@@ -60,6 +63,7 @@ def get_pizzas():
     pizzas = Pizza.query.all()
     return [p.to_dict() for p in pizzas], 200
 
+
 @app.post("/restaurant_pizzas")
 def create_restaurant_pizza():
     data = request.get_json()
@@ -78,6 +82,7 @@ def create_restaurant_pizza():
 
     except ValueError as e:
         return {"errors": [str(e)]}, 400
+
 
 if __name__ == "__main__":
     app.run(port=5555, debug=True)
