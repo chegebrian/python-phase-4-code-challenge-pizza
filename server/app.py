@@ -6,7 +6,8 @@ from flask_restful import Api, Resource
 import os
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-DATABASE = os.environ.get("DB_URI", f"sqlite:///{os.path.join(BASE_DIR, 'app.db')}")
+DATABASE = os.environ.get(
+    "DB_URI", f"sqlite:///{os.path.join(BASE_DIR, 'app.db')}")
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE
@@ -24,10 +25,12 @@ api = Api(app)
 def index():
     return "<h1>Code challenge</h1>"
 
+
 @app.get("/restaurants")
 def get_restaurants():
     restaurants = Restaurant.query.all()
     return [r.to_dict(only=("id", "name", "address")) for r in restaurants], 200
+
 
 @app.get("/restaurants/<int:id>")
 def get_restaurant(id):
@@ -37,6 +40,7 @@ def get_restaurant(id):
         return {"error": "Restaurant not found"}, 404
 
     return restaurant.to_dict(), 200
+
 
 @app.delete("/restaurants/<int:id>")
 def delete_restaurant(id):
@@ -49,6 +53,12 @@ def delete_restaurant(id):
     db.session.commit()
 
     return "", 204
+
+
+@app.get("/pizzas")
+def get_pizzas():
+    pizzas = Pizza.query.all()
+    return [p.to_dict() for p in pizzas], 200
 
 
 if __name__ == "__main__":
