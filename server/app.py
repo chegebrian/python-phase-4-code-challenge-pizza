@@ -38,5 +38,18 @@ def get_restaurant(id):
 
     return restaurant.to_dict(), 200
 
+@app.delete("/restaurants/<int:id>")
+def delete_restaurant(id):
+    restaurant = Restaurant.query.get(id)
+
+    if not restaurant:
+        return {"error": "Restaurant not found"}, 404
+
+    db.session.delete(restaurant)
+    db.session.commit()
+
+    return "", 204
+
+
 if __name__ == "__main__":
     app.run(port=5555, debug=True)
