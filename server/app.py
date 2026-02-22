@@ -60,6 +60,24 @@ def get_pizzas():
     pizzas = Pizza.query.all()
     return [p.to_dict() for p in pizzas], 200
 
+@app.post("/restaurant_pizzas")
+def create_restaurant_pizza():
+    data = request.get_json()
+
+    try:
+        new_rp = RestaurantPizza(
+            price=data["price"],
+            pizza_id=data["pizza_id"],
+            restaurant_id=data["restaurant_id"]
+        )
+
+        db.session.add(new_rp)
+        db.session.commit()
+
+        return new_rp.to_dict(), 201
+
+    except ValueError as e:
+        return {"errors": [str(e)]}, 400
 
 if __name__ == "__main__":
     app.run(port=5555, debug=True)
