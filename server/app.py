@@ -61,7 +61,10 @@ def delete_restaurant(id):
 @app.get("/pizzas")
 def get_pizzas():
     pizzas = Pizza.query.all()
-    return [p.to_dict() for p in pizzas], 200
+    return [
+        p.to_dict(only=("id", "name", "ingredients"))
+        for p in pizzas
+    ], 200
 
 
 @app.post("/restaurant_pizzas")
