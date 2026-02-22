@@ -83,8 +83,8 @@ def create_restaurant_pizza():
 
         return new_rp.to_dict(), 201
 
-    except ValueError as e:
-        return {"errors": [str(e)]}, 400
+    except ValueError:
+        return {"errors": ["validation errors"]}, 400
 
 
 if __name__ == "__main__":
