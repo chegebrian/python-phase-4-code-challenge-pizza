@@ -37,7 +37,7 @@ def get_restaurants():
 
 @app.get("/restaurants/<int:id>")
 def get_restaurant(id):
-    restaurant = Restaurant.query.get(id)
+    restaurant = db.session.get(Restaurant, id)
 
     if not restaurant:
         return {"error": "Restaurant not found"}, 404
@@ -47,7 +47,7 @@ def get_restaurant(id):
 
 @app.delete("/restaurants/<int:id>")
 def delete_restaurant(id):
-    restaurant = Restaurant.query.get(id)
+    restaurant = db.session.get(Restaurant, id)
 
     if not restaurant:
         return {"error": "Restaurant not found"}, 404
