@@ -29,5 +29,14 @@ def get_restaurants():
     restaurants = Restaurant.query.all()
     return [r.to_dict(only=("id", "name", "address")) for r in restaurants], 200
 
+@app.get("/restaurants/<int:id>")
+def get_restaurant(id):
+    restaurant = Restaurant.query.get(id)
+
+    if not restaurant:
+        return {"error": "Restaurant not found"}, 404
+
+    return restaurant.to_dict(), 200
+
 if __name__ == "__main__":
     app.run(port=5555, debug=True)
